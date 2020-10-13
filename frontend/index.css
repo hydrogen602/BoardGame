@@ -1,0 +1,192 @@
+
+body {
+    margin: 0px;
+    background-color: #8395c1;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    height: 100%;
+}
+
+/* ================= Generic ================= */
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.window {
+    /*border: 0.1px solid black;*/
+    border-radius: 1em;
+    padding: 1em;
+    background-color: #1B4F72;/*#AEB6BF;*/
+    z-index: 1;
+}
+
+.button {
+    border: 0px;
+    border-radius: 0.3em;
+    display: block;
+    background-color: #F39C12;
+}
+
+/* ================= Login Form ================= */
+
+#loginForm {
+    width: 14em;
+}
+
+#loginForm input {
+    width: 60%;
+    padding: 0.5em;
+    border: 0.1em solid gray;
+    border-radius: 0.3em;
+    margin: 0.5em auto;
+    display: block;
+}
+
+#loginForm button {
+    margin: 1em auto;
+    padding: 0.5em;
+    width: 60%;
+}
+
+.colorBoxSubBox {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.colorBoxSubBox button {
+    display: block !important;
+    margin: 0.3em !important;
+    width: 2em !important;
+    height: 2em !important;
+    border: 0px !important;
+    border-radius: 0.2em !important;
+}
+
+.colorBox h3 {
+    color: white;
+}
+
+.colorBox {
+    z-index: 2;
+    width: 90%;
+    max-height: 90%;
+    overflow: scroll;
+}
+
+.colorBoxCollection {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: stretch;
+}
+
+/* from https://www.w3schools.com/howto/howto_css_loader.asp */
+.loader {
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #F1C40F; /* Blue */
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 2s linear infinite;
+    z-index: 2;
+    margin: auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ================= Notification Systems ================= */
+
+.notificationBanner {
+    float: right;
+    margin: 1em;
+    min-width: 10em;
+    border-radius: 0.5em !important;
+}
+
+#whoopsie {
+    float: right;
+    max-width: 50%;
+}
+
+.statusBar {
+    position: relative;
+
+    width: 80%;
+    margin: auto;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+
+    color: white;
+}
+
+.statusBar button {
+    float: left;
+    display: block;
+    padding: 0.4em;
+}
+
+.statusBar p {
+    position: absolute;
+    right: 16px;
+    top: 0px;
+    display: block;
+}
+
+.playerList {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    position: relative;
+
+    display: block;
+    
+    float: left;
+
+    margin-top: 3em;
+
+    color: white;
+}
+
+.playerList i {
+    color: #F39C12;
+}
+
+/*
+.playerList p {
+    padding-left: 0.2em;
+}*/
+
+.popup {
+    z-index: 99;
+    color: white;
+    /*background-color: #F39C12;*/
+    border: 0.1em solid white;
+    box-shadow: 0.5em 0.5em 0.5em rgba(0, 0, 0, 0.5);
+}
+
+.popup button {
+    margin: auto;
+    padding: 0.5em;
+    font-size: 1em;
+}
+
+
+
+
+canvas {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+}
+
+

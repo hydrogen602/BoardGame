@@ -1,0 +1,61 @@
+2020-09-04 22:35:00,053 Server starting up
+
+2020-09-04 22:35:00,053 Server on: localhost:8080
+2020-09-04 22:35:06,023 New request from 127.0.0.1
+2020-09-04 22:35:06,027 ('127.0.0.1', 53489)
+2020-09-04 22:35:06,028 GET / HTTP/1.1
+2020-09-04 22:35:06,028 Serving: /index.html
+2020-09-04 22:35:06,030 
+2020-09-04 22:35:06,275 New request from 127.0.0.1
+2020-09-04 22:35:06,276 ('127.0.0.1', 53495)
+2020-09-04 22:35:06,276 GET /index.css HTTP/1.1
+2020-09-04 22:35:06,276 Serving: /index.css
+2020-09-04 22:35:06,277 
+2020-09-04 22:35:06,404 New request from 127.0.0.1
+2020-09-04 22:35:06,407 ('127.0.0.1', 53499)
+2020-09-04 22:35:06,407 GET /node_modules/react/umd/react.development.js HTTP/1.1
+2020-09-04 22:35:06,407 Serving: /node_modules/react/umd/react.development.js
+2020-09-04 22:35:06,409 
+2020-09-04 22:35:06,410 New request from 127.0.0.1
+2020-09-04 22:35:06,410 ('127.0.0.1', 53500)
+2020-09-04 22:35:06,410 GET /node_modules/react-dom/umd/react-dom.development.js HTTP/1.1
+2020-09-04 22:35:06,411 Serving: /node_modules/react-dom/umd/react-dom.development.js
+2020-09-04 22:35:06,423 
+2020-09-04 22:35:06,424 New request from 127.0.0.1
+2020-09-04 22:35:06,425 ('127.0.0.1', 53501)
+2020-09-04 22:35:06,425 GET /dist/main.js HTTP/1.1
+2020-09-04 22:35:06,426 Serving: /dist/main.js
+2020-09-04 22:35:06,427 
+2020-09-04 22:35:06,428 New request from 127.0.0.1
+2020-09-04 22:35:06,491 ('127.0.0.1', 53502)
+2020-09-04 22:35:06,491 GET /favicon.ico HTTP/1.1
+2020-09-04 22:35:06,491 Serving: /favicon.ico
+2020-09-04 22:35:06,492 
+2020-09-04 22:35:48,897 New request from 127.0.0.1
+2020-09-04 22:35:48,899 ('127.0.0.1', 53511)
+2020-09-04 22:35:48,899 GET / HTTP/1.1
+2020-09-04 22:35:48,899 Serving: /index.html
+2020-09-04 22:35:48,901 
+2020-09-04 22:35:49,149 New request from 127.0.0.1
+2020-09-04 22:35:49,150 ('127.0.0.1', 53516)
+2020-09-04 22:35:49,150 GET /index.css HTTP/1.1
+2020-09-04 22:35:49,150 Serving: /index.css
+2020-09-04 22:35:49,151 
+2020-09-04 22:35:49,268 New request from 127.0.0.1
+2020-09-04 22:35:49,270 ('127.0.0.1', 53517)
+2020-09-04 22:35:49,270 GET /node_modules/react/umd/react.development.js HTTP/1.1
+2020-09-04 22:35:49,270 Serving: /node_modules/react/umd/react.development.js
+2020-09-04 22:35:49,272 
+2020-09-04 22:35:49,272 New request from 127.0.0.1
+2020-09-04 22:35:49,272 ('127.0.0.1', 53518)
+2020-09-04 22:35:49,272 GET /node_modules/react-dom/umd/react-dom.development.js HTTP/1.1
+2020-09-04 22:35:49,272 Serving: /node_modules/react-dom/umd/react-dom.development.js
+2020-09-04 22:35:49,281 
+2020-09-04 22:35:49,281 New request from 127.0.0.1
+2020-09-04 22:35:49,282 ('127.0.0.1', 53519)
+2020-09-04 22:35:49,282 GET /dist/main.js HTTP/1.1
+2020-09-04 22:35:49,282 Serving: /dist/main.js
+2020-09-04 22:35:49,283 
+2020-09-04 22:35:49,284 New request from 127.0.0.1
+2020-09-04 22:36:06,627 Server shutting down
+
