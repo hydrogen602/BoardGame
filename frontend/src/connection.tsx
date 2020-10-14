@@ -1,5 +1,6 @@
 import { JsonParser, JsonMessage } from "./jsonParser";
 import { connectionDataFromJson, ConnectionData } from "./dataTypes"
+import { onProductionServer } from "./util";
 
 /**
  * sets sessionStorage 'connection' to a json representation of ConnectionData
@@ -9,8 +10,6 @@ export class Connection {
     private ws: WebSocket | null;
 
     private failedAttempts: number;
-
-    private verifiedConnection: boolean; // Hi - Hello echo verifies connection
 
     private data: ConnectionData;
 
@@ -29,7 +28,6 @@ export class Connection {
         this.data = {
             host: encodeURIComponent(data.host),
             name: encodeURIComponent(data.name),
-            color: encodeURIComponent(data.color),
             port: data.port,
             token: (data.token) ? data.token : null
         }
@@ -39,8 +37,6 @@ export class Connection {
 
         this.connectedOnce = false;
         this.failedAttempts = 0;
-
-        this.verifiedConnection = false;
 
         this.jsonMessageHandler = (a: any) => { throw Error("jsonMessageHandler not set"); };
         this.ws = null;
@@ -73,11 +69,13 @@ export class Connection {
     }
 
     private getUrl() {
+        const protocol = (onProductionServer()) ? 'wss' : 'ws';
+
         if (this.data.token != null) {
-            return `wss://${this.data.host}:${this.data.port}/${this.data.name}/${this.data.token}/${this.data.color}`
+            return `${protocol}://${this.data.host}:${this.data.port}/${this.data.name}/${this.data.token}/`
         }
         else {
-            return `wss://${this.data.host}:${this.data.port}/${this.data.name}/${this.data.color}`
+            return `${protocol}://${this.data.host}:${this.data.port}/${this.data.name}/`
         }    
     }
 
@@ -88,13 +86,10 @@ export class Connection {
         this.ws.onclose = this.onclose.bind(this);
         this.ws.onmessage = this.onmessage.bind(this);
         this.ws.onopen = this.onopen.bind(this);
-
-        this.verifiedConnection = false;
     }
 
     private onclose(ev: CloseEvent) {
         console.log("WS closed", ev);
-        this.verifiedConnection = false;
         
         if (ev.code >= 4000 && ev.code < 4100) {
             // my error codes
@@ -115,7 +110,6 @@ export class Connection {
 
     private onerror(ev: Event) {
         console.log("WS errored", ev);
-        this.verifiedConnection = false;
 
         this.failedAttempts += 1
         if (!this.connectedOnce) {
@@ -124,39 +118,33 @@ export class Connection {
     }
 
     private onmessage(ev: MessageEvent) {
-        if (ev.data == "Hello") {
-            console.log("Successful Echo, Server is alive!");
-            this.verifiedConnection = true;
-        }
-        else {
-            try {
-                const obj = JSON.parse(ev.data);
+        try {
+            const obj = JSON.parse(ev.data);
 
-                //console.log("got msg:", obj);
+            //console.log("got msg:", obj);
 
-                if ('token' in obj) {
-                    const token: string = JsonParser.requireString(obj, 'token');
-                    if (!this.data.token) {
-                        // remember the token
-                        console.log('Got token', token);
-                        this.data.token = token;
+            if ('token' in obj) {
+                const token: string = JsonParser.requireString(obj, 'token');
+                if (!this.data.token) {
+                    // remember the token
+                    console.log('Got token', token);
+                    this.data.token = token;
 
-                        sessionStorage.setItem('connection', JSON.stringify(this.data));
-                    }
-                    return;
+                    sessionStorage.setItem('connection', JSON.stringify(this.data));
                 }
+                return;
+            }
 
-                this.jsonMessageHandler(obj);
+            this.jsonMessageHandler(obj);
 
-            } catch (e) {
-                if (e.name == 'SyntaxError') {
-                    console.log('Got invalid JSON')
-                }
-                else {
-                    console.log('Error:', e);
-                    console.log('Error data:', e.data);
-                    throw(e);
-                }
+        } catch (e) {
+            if (e.name == 'SyntaxError') {
+                console.log('Got invalid JSON')
+            }
+            else {
+                console.log('Error:', e);
+                console.log('Error data:', e.data);
+                throw(e);
             }
         }
     }
@@ -168,8 +156,7 @@ export class Connection {
         this.connectedOnce = true;
 
         if (this.ws) {
-            this.ws.send('Hi');
-            this.ws.send('history');
+            //this.ws.send('history');
         }
         else {
             throw Error('this shouldn\'t happen');

@@ -5,7 +5,6 @@ import { Spinner } from "./spinner";
 
 import { Connection } from "../connection";
 import { Game } from "./game";
-import { ColorBox } from "./colorBox";
 import { ConnectionData } from "../dataTypes";
 
 const atLogin = 0

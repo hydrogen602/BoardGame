@@ -1,3 +1,21 @@
+'''
+{"type": "pass"} -> pass
+{
+    "type": "move",
+    "locationX": <int>,
+    "locationY": <int>
+}                       -> place stone
+
+returns
+
+{
+    'board': Array<Array<string>>
+    'message': <str>,                   <- optional
+    'color': 'white' | 'black',         <- optional
+    'turn': <str: player name>          <- optional
+}
+'''
+
 from typing import Dict, List, Optional, cast
 import json
 from gameServerBackend.requestProcessor.game import AbstractGame # type: ignore
@@ -5,6 +23,9 @@ from gameServerBackend.requestProcessor.game import interactions # type: ignore
 from gameServerBackend.requestProcessor.dataTypes import Player # type: ignore
 
 class TurnRequestParser:
+    '''
+    Get information out of json and raise an Assertion if anything is wrong
+    '''
 
     MOVE_TYPE_MOVE = 'move'
     MOVE_TYPE_PASS = 'pass'
@@ -55,12 +76,12 @@ class GoGame(AbstractGame):
 
         if self.__black is None:
             self.__black = playerData
-            return interactions.ResponseSuccess("Joined as black", playerData)
+            return self.__makeSuccessfulResponse(playerData, "Joined as black", {'color': 'black'})
 
         elif self.__white is None:
             self.__white = playerData
             self.startGame()
-            return interactions.ResponseSuccess("Joined as white", playerData, None, {self.__black, f"{playerData.getPlayerName()} joined as white"})
+            return self.__makeSuccessfulResponse(playerData, f"Joined as white. {self.__black.getPlayerName()} is your opponent", state={'color': 'white'}, msgToOther=f"{playerData.getPlayerName()} joined as white")
 
         else:
             return interactions.ResponseFailure(playerData, "No space left in this game")
@@ -89,10 +110,10 @@ class GoGame(AbstractGame):
                 if y < 0 or y >= self.__gridSize:
                     return interactions.ResponseFailure(playerData, 'Move out of bounds')
 
-                self.__move(x, y, playerData=playerData)
-
+                return self.__move(x, y, playerData=playerData)
             else:
-                pass
+                self.__nextTurn()
+                return self.__makeSuccessfulResponse(playerData, msgToOther="Opponent passed")
 
         except json.JSONDecodeError:
             return interactions.ResponseFailure(playerData, "Got invalid json")
@@ -103,10 +124,42 @@ class GoGame(AbstractGame):
         self.__curTurn = self.__black
         super().startGame()
     
-    def __getStateAsJson(self) -> str:
-        return json.dumps({
-            'board': self.__board
-        })
+    def __makeSuccessfulResponse(self, src: Player, msg: Optional[str] = None, state: Optional[Dict[str, object]] = None, msgToAll: Optional[str] = None, msgToOther: Optional[str] = None) -> interactions.ResponseSuccess:
+        '''
+        Assemble a successful response. The result of __getStateAsJson is send every time, but if extra data should be send, use state
+        '''
+        if msgToAll:
+            state['message'] = msgToAll
+        
+        if state is None:
+            state = self.__getStateAsJson()
+        else:
+            state = {
+                **state,
+                **self.__getStateAsJson()
+            }
+
+        
+        other: Player = self.__black if src == self.__white else self.__white
+        if self.hasGameStarted:
+            assert other is not None
+            
+        return interactions.ResponseSuccess(
+            json.dumps({'message': msg}) if msg else None,
+            src,
+            ([self.__black, self.__white], json.dumps(state)),
+            {other: json.dumps({'message': msgToOther})} if msgToOther is not None and other is not None else None
+        )
+
+    
+    def __getStateAsJson(self) -> Dict[str, object]:
+        '''
+        Get the state of the game
+        '''
+        return {
+            'board': self.__board,
+            'turn': self.__curTurn.getPlayerName() if self.__curTurn else None
+        }
     
     def __nextTurn(self):
         if self.__curTurn == self.__black:
@@ -125,9 +178,9 @@ class GoGame(AbstractGame):
             return interactions.ResponseFailure(playerData, "Player unknown")
 
         if self.__board[x][y] == '':
-            self.__board[x][y] = color
-            # TODO: response success
+            self.__board[x][y] = color[0]
+
             self.__nextTurn()
-            return interactions.ResponseSuccess(None, playerData, ([self.__white, self.__black], self.__getStateAsJson()), None)
+            return self.__makeSuccessfulResponse(playerData)
         else:
             return interactions.ResponseFailure(playerData, 'Space occupied')
