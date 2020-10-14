@@ -34,8 +34,8 @@ export class LoginForm extends React.Component<IProp, IState> {
 
         this.state = {
             name: name,
-            host: (onAWS) ? "game.jonathanrotter.com" : host,
-            port: (onAWS) ? "5000" : port,
+            host: (onAWS) ? "game.jonathanrotter.com" : 'localhost', //host, <- hard coded for debugging
+            port: (onAWS) ? "5000" : '5000', //port,
             onAWS: onAWS
         }
 

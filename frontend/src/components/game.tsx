@@ -35,26 +35,28 @@ export class Game extends React.Component<IProps, IState> {
 
     private onMessage(obj: object) {
         //console.log(obj);
-        if (JsonParser.askType(obj) == "notification") {
-            const msg = JsonParser.requireString(obj, 'content');
+        if ("message" in obj) {
+            const msg = JsonParser.requireString(obj, 'message');
+            console.log(msg);
 
-            this.setState({
-                currNotification: msg
-            });
+            // this.setState({
+            //     currNotification: msg
+            // });
 
-            setTimeout(() => {
-                if (this.state.currNotification == msg) {
-                    this.setState({ currNotification: null });
-                }
-            }, 10000);
+            // setTimeout(() => {
+            //     if (this.state.currNotification == msg) {
+            //         this.setState({ currNotification: null });
+            //     }
+            // }, 10000);
         }
 
-        else if (JsonParser.askType(obj) == "error") {
-            const errMsg = JsonParser.requireString(obj, 'content');
+        else if ('ResponseFailure' in obj) {
+            const errMsg = JsonParser.requireString(obj, 'ResponseFailure');
+            console.error(errMsg);
 
-            this.setState({
-                currError: errMsg
-            });
+            // this.setState({
+            //     currError: errMsg
+            // });
         }
     }
 
