@@ -26,5 +26,9 @@ export function assertInt(n: number) {
 }
 
 export function onProductionServer(): boolean {
-    return "https://game.jonathanrotter.com/" == document.URL;
+    const arr = document.URL.split('/')
+    if (arr.length < 3) {
+        return false;
+    }
+    return "game.jonathanrotter.com" == arr[2];
 }
