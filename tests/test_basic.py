@@ -1,4 +1,4 @@
-from gameServerBackend.requestProcessor.dataTypes import Player
+from game_server_backend.requestProcessor.dataTypes import Player
 import pytest
 import os
 import sys
@@ -7,7 +7,7 @@ import json
 sys.path.append(os.path.abspath(os.curdir))
 
 from go_game import GoGame
-from gameServerBackend.requestProcessor import interactions
+from game_server_backend.requestProcessor import interactions
 
 def test_1():
     g = GoGame()

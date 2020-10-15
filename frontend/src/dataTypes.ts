@@ -4,7 +4,8 @@ export interface ConnectionData {
     name: string,
     host: string,
     port: number,
-    token: string | null
+    token: string | null,
+    gameID: string
 }
 
 export function connectionDataFromJson(o: object): ConnectionData {
@@ -12,6 +13,7 @@ export function connectionDataFromJson(o: object): ConnectionData {
         name: JsonParser.requireString(o, 'name'),
         host: JsonParser.requireString(o, 'host'),
         port: JsonParser.requireNumber(o, 'port'),
-        token: JsonParser.requireString(o, 'token')
+        token: JsonParser.requireString(o, 'token'),
+        gameID: JsonParser.requireString(o, 'gameID')
     }
 }

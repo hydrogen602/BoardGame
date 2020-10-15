@@ -29,7 +29,8 @@ export class Connection {
             host: encodeURIComponent(data.host),
             name: encodeURIComponent(data.name),
             port: data.port,
-            token: (data.token) ? data.token : null
+            token: (data.token) ? data.token : null,
+            gameID: encodeURIComponent(data.gameID)
         }
         
         this.onWebSockFailure = onWebSockFailure;
@@ -71,12 +72,7 @@ export class Connection {
     private getUrl() {
         const protocol = (onProductionServer()) ? 'wss' : 'ws';
 
-        if (this.data.token != null) {
-            return `${protocol}://${this.data.host}:${this.data.port}/${this.data.name}/${this.data.token}/`
-        }
-        else {
-            return `${protocol}://${this.data.host}:${this.data.port}/${this.data.name}/`
-        }    
+        return `${protocol}://${this.data.host}:${this.data.port}/${this.data.gameID}/${this.data.name}/${this.data.token}/`  
     }
 
     private connect() {

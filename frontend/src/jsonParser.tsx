@@ -105,7 +105,7 @@ export class JsonParser {
         return value;
     }
 
-    static requireArray(o: any, name: string): Array<any> {
+    static requireArray(o: any, name: string | number): Array<any> {
         if (!(name in o)) {
             throw new JsonParserError("Missing json field: '" + name + "'");
         }
@@ -113,6 +113,40 @@ export class JsonParser {
         if (typeof(value) != 'object' || value.__proto__.constructor.name != 'Array') {
             throw new JsonParserError("Json field '" + name + "' is of the wrong type: got '" + typeof(value) + "' but expected 'Array'");
         }
+        return value;
+    }
+
+    static requireIntArray(o: any, name: string | number): Array<number> {
+        if (!(name in o)) {
+            throw new JsonParserError("Missing json field: '" + name + "'");
+        }
+        const value: any = o[name];
+        if (typeof(value) != 'object' || value.__proto__.constructor.name != 'Array') {
+            throw new JsonParserError("Json field '" + name + "' is of the wrong type: got '" + typeof(value) + "' but expected 'Array'");
+        }
+        const valI: Array<number> = value
+        valI.forEach(e => {
+            if (typeof e != 'number') {
+                throw new JsonParserError("Json field '" + name + "' is of the wrong type: got element of type '" + typeof(e) + "' but expected 'Array<number>'");
+            }
+        });
+        return value;
+    }
+
+    static requireStringArray(o: any, name: string | number): Array<string> {
+        if (!(name in o)) {
+            throw new JsonParserError("Missing json field: '" + name + "'");
+        }
+        const value: any = o[name];
+        if (typeof(value) != 'object' || value.__proto__.constructor.name != 'Array') {
+            throw new JsonParserError("Json field '" + name + "' is of the wrong type: got '" + typeof(value) + "' but expected 'Array'");
+        }
+        const valI: Array<string> = value
+        valI.forEach(e => {
+            if (typeof e != 'string') {
+                throw new JsonParserError("Json field '" + name + "' is of the wrong type: got element of type '" + typeof(e) + "' but expected 'Array<string>'");
+            }
+        });
         return value;
     }
 

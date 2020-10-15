@@ -18,9 +18,9 @@ returns
 
 from typing import Dict, List, Optional, cast
 import json
-from gameServerBackend.requestProcessor.game import AbstractGame # type: ignore
-from gameServerBackend.requestProcessor.game import interactions # type: ignore
-from gameServerBackend.requestProcessor.dataTypes import Player # type: ignore
+from game_server_backend.requestProcessor.game import AbstractGame # type: ignore
+from game_server_backend.requestProcessor.game import interactions # type: ignore
+from game_server_backend.requestProcessor.dataTypes import Player # type: ignore
 
 class TurnRequestParser:
     '''
@@ -71,28 +71,41 @@ class GoGame(AbstractGame):
         self.__board: List[List[str]] = [['' for _ in range(self.__gridSize)] for _ in range(self.__gridSize)]
 
     def joinPlayer(self, playerData: Player, otherRequestData: Optional[str] = None) -> interactions.Response:
+        if playerData == self.__white or playerData == self.__black:
+                return self.__makeSuccessfulResponse(playerData, "Welcome back")
+        
         if self.hasGameStarted:
             return interactions.ResponseFailure(playerData, "Game already started")
 
         if self.__black is None:
             self.__black = playerData
-            return self.__makeSuccessfulResponse(playerData, "Joined as black", {'color': 'black'})
+            return self.__makeSuccessfulResponse(playerData, "Joined as black", state={'color': 'black'})
 
         elif self.__white is None:
             self.__white = playerData
             self.startGame()
+            print(self.listPlayers())
             return self.__makeSuccessfulResponse(playerData, f"Joined as white. {self.__black.getPlayerName()} is your opponent", state={'color': 'white'}, msgToOther=f"{playerData.getPlayerName()} joined as white")
 
         else:
+            print('no space left')
             return interactions.ResponseFailure(playerData, "No space left in this game")
 
     def leavePlayer(self, playerData: Player) -> interactions.ResponseSuccess:
         pass
 
+    def listPlayers(self) -> List[Player]:
+        ls = []
+        if self.__black:
+            ls.append(self.__black)
+        if self.__white:
+            ls.append(self.__white)
+        return ls
+
     def handleRequest(self, playerData: Player, request: str) -> interactions.Response:
         if not self.hasGameStarted:
             return interactions.ResponseFailure(playerData, "Game hasn't started yet")
-        
+
 
         try:
             obj = json.loads(request)
@@ -128,9 +141,6 @@ class GoGame(AbstractGame):
         '''
         Assemble a successful response. The result of __getStateAsJson is send every time, but if extra data should be send, use state
         '''
-        if msgToAll:
-            state['message'] = msgToAll
-        
         if state is None:
             state = self.__getStateAsJson()
         else:
@@ -138,6 +148,9 @@ class GoGame(AbstractGame):
                 **state,
                 **self.__getStateAsJson()
             }
+        
+        if msgToAll:
+            state['message'] = msgToAll
 
         
         other: Player = self.__black if src == self.__white else self.__white
@@ -147,7 +160,7 @@ class GoGame(AbstractGame):
         return interactions.ResponseSuccess(
             json.dumps({'message': msg}) if msg else None,
             src,
-            ([self.__black, self.__white], json.dumps(state)),
+            (self.listPlayers(), json.dumps(state)),
             {other: json.dumps({'message': msgToOther})} if msgToOther is not None and other is not None else None
         )
 
@@ -158,7 +171,7 @@ class GoGame(AbstractGame):
         '''
         return {
             'board': self.__board,
-            'turn': self.__curTurn.getPlayerName() if self.__curTurn else None
+            'turn': self.__curTurn.getPlayerName() if self.__curTurn else ''
         }
     
     def __nextTurn(self):

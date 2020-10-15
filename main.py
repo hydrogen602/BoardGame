@@ -1,5 +1,5 @@
-from gameServerBackend.requestProcessor import dataTypes, RequestProcessor
-from gameServerBackend.server import Server
+from game_server_backend.requestProcessor import dataTypes, RequestProcessor
+from game_server_backend.server import Server
 
 import go_game
 
@@ -11,6 +11,6 @@ if __name__ == "__main__":
 
     rp = RequestProcessor(playerDB, gameDB)
 
-    s = Server('localhost', 5000, requestProcessor=rp, config={'USE_SSL': False, 'verbose': True})
+    s = Server('localhost', 5001, requestProcessor=rp, config={'USE_SSL': False, 'verbose': True})
 
     s.run()
