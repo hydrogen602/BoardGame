@@ -23,13 +23,13 @@ def test_1():
 
     assert resp.dataToSome is None
     assert json.loads(resp.dataToSender) == {'message': 'Joined as black'}
-    (b, w), msgToAll = resp.dataToAll
+    (b,), msgToAll = resp.dataToAll
     assert b == p1
-    assert w is None
+    #assert w is None
     assert json.loads(msgToAll) == {
         'board': [['' for _ in range(19)] for _ in range(19)],
         'color': 'black', 
-        'turn': None
+        'turn': ''
         }
 
     assert not g.hasGameStarted
