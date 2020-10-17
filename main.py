@@ -31,6 +31,6 @@ if __name__ == "__main__":
     except FileNotFoundError:
         print('Could not find config.json, using default')
 
-    s = Server(requestProcessor=rp, config=config)
+    s = Server(None, None, requestProcessor=rp, config=config)
 
     s.run()
