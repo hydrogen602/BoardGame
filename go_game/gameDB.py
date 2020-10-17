@@ -31,7 +31,7 @@ class GameSQLite(GameManager):
 
     def __cleanup(self):
         self.__cur.execute('DROP TABLE IF EXISTS games')
-        self.__cur.commit()
+        self.__conn.commit()
         self.__conn.close()
     
     @staticmethod
