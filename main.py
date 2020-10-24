@@ -4,7 +4,25 @@ import json
 import go_game
 
 if __name__ == "__main__":
-    gameDB = go_game.GameSQLite('game.db', prefix='go')
+    # default config
+    config = {
+        'USE_SSL': False, 
+        'verbose': True, 
+        'ip': 'localhost', 
+        'port': 5000,
+        'databasePath': 'game.db'
+    }
+
+    try:
+        with open('config.json') as f:
+            config = json.load(f)
+            print('Loaded config from file')
+    except FileNotFoundError:
+        print('Could not find config.json, using default')
+
+
+    gameDB = go_game.GameSQLite(config.pop('databasePath'), prefix='go')
+    
     playerDB = dataTypes.BasicPlayerManager()
 
     #gameDB.addGame('go1', go_game.GoGame())
@@ -15,21 +33,6 @@ if __name__ == "__main__":
     print('GameIDs:', gameDB.getAllGameIDs())
 
     rp = RequestProcessor(playerDB, gameDB)
-
-    # default config
-    config = {
-        'USE_SSL': False, 
-        'verbose': True, 
-        'ip': 'localhost', 
-        'port': 5000
-    }
-
-    try:
-        with open('config.json') as f:
-            config = json.load(f)
-            print('Loaded config from file')
-    except FileNotFoundError:
-        print('Could not find config.json, using default')
 
     s = Server(None, None, requestProcessor=rp, config=config)
 
