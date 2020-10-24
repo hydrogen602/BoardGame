@@ -1,8 +1,14 @@
 .mypy_cache/
-frontend/node_modules/
-frontend/dist/
 **/__pycache__
 *.log*
+
+# docker
 dockerConfig.json
 dockerProdConfig.json
 dist/
+
+# frontend stuff
+frontend/site.zip
+frontend/tmp
+frontend/node_modules
+frontend/dist

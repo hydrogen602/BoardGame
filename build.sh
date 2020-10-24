@@ -12,6 +12,8 @@ function usage {
     echo -e "  run-image               Build & run docker image for local testing"
     echo -e "  save-image outfile      save docker image"
     echo -e "  load-image infile       load docker image"
+    echo -e "  frontend                Build react frontend"
+    echo -e "  save-frontend           Save react frontend"
     exit 1
 }
 
@@ -77,6 +79,21 @@ else
         fi
 
         docker image load < $2
+    elif [ $1 == "frontend" ]; then 
+        cd frontend
+        npx webpack
+        rm -f info*.log*
+    elif [ $1 == "save-frontend" ]; then 
+        cd frontend
+        npx webpack
+        rm -f info*.log*
+        echo "Packing up"
+        mkdir tmp
+        cp -r src tmp/ 
+        cp *.css *.html *.json *.js tmp/
+        zip -r site.zip tmp
+        echo "Created zip file, cleaning up"
+        rm -r tmp
     else
         echo "unrecognized command: $1"
         usage
