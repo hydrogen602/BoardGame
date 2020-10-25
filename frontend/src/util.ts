@@ -30,5 +30,5 @@ export function onProductionServer(): boolean {
     if (arr.length < 3) {
         return false;
     }
-    return "game.jonathanrotter.com" == arr[2];
+    return "game.jonathanrotter.com" == arr[2] || "projects.jonathanrotter.com" == arr[2];
 }

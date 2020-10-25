@@ -6,9 +6,14 @@
 dockerConfig.json
 dockerProdConfig.json
 dist/
+*.tar
 
 # frontend stuff
 frontend/site.zip
 frontend/tmp
 frontend/node_modules
 frontend/dist
+
+# other
+deploy.sh
+

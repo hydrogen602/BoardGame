@@ -13,7 +13,7 @@ function usage {
     echo -e "  save-image outfile      save docker image"
     echo -e "  load-image infile       load docker image"
     echo -e "  frontend                Build react frontend"
-    echo -e "  save-frontend           Save react frontend"
+    echo -e "  save-frontend           Build & save react frontend"
     exit 1
 }
 
@@ -55,7 +55,7 @@ else
         cd dist && node server.js
         cd ..
     elif [ $1 == "image" ]; then
-        if [ $2 == "deploy" ]; then
+        if [ -n $2 ] && [ $2 == "deploy" ]; then
             image dockerProdConfig.json
         else
             image dockerConfig.json
@@ -88,9 +88,10 @@ else
         npx webpack
         rm -f info*.log*
         echo "Packing up"
+        rm -r site.zip
         mkdir tmp
-        cp -r src tmp/ 
-        cp *.css *.html *.json *.js tmp/
+        cp -r dist tmp/ 
+        cp *.css *.html package*.json tmp/
         zip -r site.zip tmp
         echo "Created zip file, cleaning up"
         rm -r tmp
