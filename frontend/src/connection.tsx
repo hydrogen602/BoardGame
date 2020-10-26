@@ -69,6 +69,10 @@ export class Connection {
         return this.data.name;
     }
 
+    getToken(): string | null {
+        return this.data.token;
+    }
+
     private getUrl() {
         const protocol = (onProductionServer()) ? 'wss' : 'ws';
 

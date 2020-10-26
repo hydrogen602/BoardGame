@@ -25,7 +25,7 @@ export class UI extends React.Component<{}, IState> {
 
         const maybe = Connection.regainOldConnectionIfExists(this.onWebSockFailure.bind(this), this.onWebSockOpen.bind(this));
         if (maybe) {
-            console.log('regained old connection');
+            console.log('regained old connection with token = ' + maybe.getToken());
         }
         else {
             console.log('no old connection found');

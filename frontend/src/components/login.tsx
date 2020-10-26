@@ -48,6 +48,7 @@ export class LoginForm extends React.Component<IProp, IState> {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    
 
     handleChange(event: React.FormEvent<HTMLInputElement>) {
         if (event.currentTarget.name == "name") {

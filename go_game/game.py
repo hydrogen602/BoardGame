@@ -72,7 +72,7 @@ class GoGame(AbstractGame):
 
     def joinPlayer(self, playerData: Player, otherRequestData: Optional[str] = None) -> interactions.Response:
         if playerData == self.__white or playerData == self.__black:
-                return self.__makeSuccessfulResponse(playerData, "Welcome back")
+            return self.__makeSuccessfulResponse(playerData, "Welcome back")
         
         if self.hasGameStarted:
             return interactions.ResponseFailure(playerData, "Game already started")
